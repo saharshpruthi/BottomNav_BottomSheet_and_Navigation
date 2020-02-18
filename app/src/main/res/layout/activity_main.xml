@@ -120,8 +120,9 @@
             app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
             app:itemTextAppearanceInactive="@style/BottomNavigationView"
             app:labelVisibilityMode="labeled"
-            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+            app:layout_behavior="com.example.myapplication.BottomNavigationBehavior"
             app:menu="@menu/bottom_nav_menu" />
+<!--        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"-->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 <!--    android:baselineAlignBottom = "true"-->

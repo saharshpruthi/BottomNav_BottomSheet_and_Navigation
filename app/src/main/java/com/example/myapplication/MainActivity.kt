@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -22,8 +23,13 @@ import kotlinx.android.synthetic.main.bottom_sheet.*
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
+import android.util.AttributeSet
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.ViewCompat
+import java.util.Collections.max
+import java.util.Collections.min
+import kotlin.math.max
+import kotlin.math.min
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -195,5 +201,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.show_bottom_sheet_dialog_button -> {
             }
         }
+    }
+}
+
+
+class BottomNavigationBehavior<V : View>(context: Context, attrs: AttributeSet) :
+    CoordinatorLayout.Behavior<V>(context, attrs) {
+
+    override fun onStartNestedScroll(
+        coordinatorLayout: CoordinatorLayout, child: V, directTargetChild: View, target: View, axes: Int, type: Int
+    ): Boolean {
+        return axes == ViewCompat.SCROLL_AXIS_VERTICAL
+    }
+
+    override fun onNestedPreScroll(
+        coordinatorLayout: CoordinatorLayout, child: V, target: View, dx: Int, dy: Int, consumed: IntArray, type: Int
+    )
+    {
+        super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type)
+
+        child.translationY = max(0f, min(child.height.toFloat(), child.translationY + dy)) // Clamping function
+        // It clamps the translationY value between two bounds — 0 and the view height —
+        // because we don’t want to push the bottom bar further down than its own height
+        // and we don’t want to push it up further than its starting position.
     }
 }
